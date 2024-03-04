@@ -4,14 +4,14 @@ import ImageUploadForm from "../components/ImageUploadForm";
 
 const Home: NextPage = () => {
   return (
-    <div className="mx-8">
+    <div>
       <Head>
         <title>Upload an image</title>
       </Head>
-      <main className="py-16 leading-8 text-xl grid min-h-screen place-items-center">
+      <main className="pt-64 w-full min-h-screen leading-8 text-xl">
         <ImageUploadForm />
       </main>
-      <p className="py-16 text-center">
+      <p className="mb-16 text-center">
         Made by{" "}
         <a
           className="text-green-400"

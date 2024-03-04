@@ -82,18 +82,33 @@ const ImageUploadForm: NextPage = () => {
     }
   };
 
+  const reset = () => {
+    setErrorMessage("");
+    setUploadMessage("");
+    setImageData(null);
+  };
+
+  const clearFile = () => {
+    reset();
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+      setFileName(null);
+      setFileSelected(false);
+    }
+  };
+
   return (
-    <div>
-      <h1 className="text-center text-xl text-wrap w-[500px] mb-8">
+    <div className="mx-auto w-[500px]">
+      <h1 className="text-center text-xl text-wrap mb-8">
         Anything you upload here will be public.
       </h1>
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col items-center space-y-4"
+        className="flex flex-col items-center space-y-4 w-full"
       >
         <label
           htmlFor="image"
-          className="flex items-center justify-center w-full py-2 px-4 bg-gray-200 rounded-lg cursor-pointer hover:bg-gray-300 transition duration-300"
+          className="flex items-center justify-center w-full py-2 px-4 bg-gray-200 rounded-lg cursor-pointer hover:bg-gray-300 transition duration-300 dark:text-black"
         >
           Select Image File
           <input
@@ -104,6 +119,7 @@ const ImageUploadForm: NextPage = () => {
             ref={fileInputRef}
             className="hidden"
             onChange={(e) => {
+              reset();
               setFileSelected(true);
               setFileName(String(e.currentTarget.files?.[0].name) || null);
             }}
@@ -120,10 +136,21 @@ const ImageUploadForm: NextPage = () => {
         >
           Upload Image
         </button>
-        {fileName && <p className="pt-2 text-center">{fileName}</p>}
+        {fileName && (
+          <div className="flex items-center justify-between w-full py-2">
+            <p className="truncate">{fileName}</p>
+            <button
+              type="button"
+              onClick={clearFile}
+              className="ml-2 text-red-600 hover:text-red-800 focus:outline-none"
+            >
+              &#x2715;
+            </button>
+          </div>
+        )}
       </form>
       <div className="mt-4 text-center">
-        <div className="my-8">
+        <div className="my-8 text-lg">
           {uploadMessage && <p className="text-green-500">{uploadMessage}</p>}
           {errorMessage && <p className="text-yellow-500">{errorMessage}</p>}
         </div>
