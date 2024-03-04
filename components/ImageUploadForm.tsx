@@ -134,7 +134,7 @@ const ImageUploadForm: NextPage = () => {
           }`}
           disabled={!fileSelected}
         >
-          Upload Image
+          Upload
         </button>
         {fileName && (
           <div className="flex items-center justify-between w-full py-2">
