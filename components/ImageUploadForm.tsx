@@ -108,7 +108,7 @@ const ImageUploadForm: NextPage = () => {
       >
         <label
           htmlFor="image"
-          className="flex items-center justify-center w-full py-2 px-4 bg-gray-200 rounded-lg cursor-pointer hover:bg-gray-300 transition duration-300 dark:bg-black"
+          className="flex items-center justify-center w-full py-2 px-4 bg-gray-200 rounded-lg cursor-pointer hover:bg-gray-300 transition duration-300 dark:bg-indigo-800 dark:hover:bg-indigo-900"
         >
           Select Image File
           <input
