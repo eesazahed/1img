@@ -74,7 +74,7 @@ const ImageUploadForm: NextPage = () => {
 
   const copyToClipboard = () => {
     if (imageData) {
-      const link = `${window.location.href}api/i/${imageData}`;
+      const link = `${window.location.href}api/${imageData}`;
       navigator.clipboard.writeText(link).then(() => {
         setCopyButtonText("Copied!");
         setTimeout(() => setCopyButtonText("Copy to clipboard"), 1000);
