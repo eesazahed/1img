@@ -8,6 +8,7 @@ const ImageUploadForm: NextPage = () => {
     useState<string>("COPY TO CLIPBOARD");
   const [imageData, setImageData] = useState<string | null>(null);
   const [fileSelected, setFileSelected] = useState<boolean>(false);
+  const [fileName, setFileName] = useState<string | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -24,16 +25,19 @@ const ImageUploadForm: NextPage = () => {
       return;
     }
 
+    setFileName(imageFile.name);
+
     const reader = new FileReader();
     reader.onload = async () => {
       if (typeof reader.result === "string") {
         try {
+          const imageData = await convertToWebP(reader.result);
           const response = await fetch("/api/upload", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ imageBase64: reader.result }),
+            body: JSON.stringify({ imageData }),
           });
 
           if (response.ok) {
@@ -56,41 +60,42 @@ const ImageUploadForm: NextPage = () => {
     reader.readAsDataURL(imageFile);
   };
 
+  const convertToWebP = async (imageDataURL: string): Promise<string> => {
+    const img = new Image();
+    img.src = imageDataURL;
+    await img.decode();
+    const canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+    const ctx = canvas.getContext("2d");
+    ctx?.drawImage(img, 0, 0);
+    return canvas.toDataURL("image/webp");
+  };
+
   const copyToClipboard = () => {
     if (imageData) {
       const link = `${window.location.href}api/i/${imageData}`;
       navigator.clipboard.writeText(link).then(() => {
-        setCopyButtonText("COPIED!");
-        setTimeout(() => setCopyButtonText("COPY TO CLIPBOARD"), 1000);
+        setCopyButtonText("Copied!");
+        setTimeout(() => setCopyButtonText("Copy to clipboard"), 1000);
       });
     }
   };
 
   return (
     <div>
+      <h1 className="text-center text-xl text-wrap w-[500px] mb-8">
+        Anything you upload here will be public.
+      </h1>
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col items-center space-y-4 w-[500px]"
+        className="flex flex-col items-center space-y-4"
       >
         <label
           htmlFor="image"
-          className="flex items-center justify-center w-full py-2 px-4 bg-gray-200 text-gray-700 rounded-lg cursor-pointer hover:bg-gray-300 transition duration-300"
+          className="flex items-center justify-center w-full py-2 px-4 bg-gray-200 rounded-lg cursor-pointer hover:bg-gray-300 transition duration-300"
         >
-          <svg
-            className="w-6 h-6 mr-2"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-            />
-          </svg>
-          Choose Image
+          Select Image File
           <input
             type="file"
             accept="image/*"
@@ -98,7 +103,10 @@ const ImageUploadForm: NextPage = () => {
             id="image"
             ref={fileInputRef}
             className="hidden"
-            onChange={() => setFileSelected(true)}
+            onChange={(e) => {
+              setFileSelected(true);
+              setFileName(String(e.currentTarget.files?.[0].name) || null);
+            }}
           />
         </label>
         <button
@@ -112,6 +120,7 @@ const ImageUploadForm: NextPage = () => {
         >
           Upload Image
         </button>
+        {fileName && <p className="pt-2 text-center">{fileName}</p>}
       </form>
       <div className="mt-4 text-center">
         <div className="my-8">

@@ -9,6 +9,6 @@ datasource supabase {
 
 model Image {
   id        Int      @id @default(autoincrement())
-  img       String
+  imageData String
   createdAt DateTime @default(now())
 }

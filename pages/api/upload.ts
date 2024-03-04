@@ -6,12 +6,12 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
-    const { imageBase64 } = req.body;
+    const { imageData } = req.body;
 
     try {
       const createdImage = await prisma.image.create({
         data: {
-          img: imageBase64,
+          imageData,
         },
       });
 
