@@ -1,0 +1,14 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource supabase {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Image {
+  id        Int      @id @default(autoincrement())
+  img       String
+  createdAt DateTime @default(now())
+}
