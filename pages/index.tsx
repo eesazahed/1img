@@ -11,7 +11,7 @@ const Home: NextPage = () => {
       <main className="pt-64 w-full min-h-screen leading-8 text-xl">
         <ImageUploadForm />
       </main>
-      <p className="mb-16 text-center">
+      <p className="my-16 text-center">
         Made by{" "}
         <a
           className="text-green-400"
