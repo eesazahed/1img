@@ -11,14 +11,10 @@ export default async function handler(
 
   const id = req.query.id as string;
 
-  if (!id.match(/^\d+$/)) {
-    return res.status(400).json({ message: "Invalid ID" });
-  }
-
   try {
     const image = await prisma.image.findUnique({
       where: {
-        id: parseInt(id),
+        id: id,
       },
     });
 
