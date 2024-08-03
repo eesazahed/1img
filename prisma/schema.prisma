@@ -8,7 +8,7 @@ datasource supabase {
 }
 
 model Image {
-  id        String      @id @default(uuid())
+  id        String   @id @default(uuid())
   imageData String
   createdAt DateTime @default(now())
 }
